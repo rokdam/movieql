@@ -1,77 +1,23 @@
-export const people = [
-    {
-        id : 1,
-        name : " Nicolas",
-        age : 18,
-        gender : "female",
-    },
-    {
-        id:2,
-        name : " Nicolas2",
-        age : 19,
-        gender : "male",
-    },
-    {
-        id:3,
-        name : " Nicolas3",
-        age : 20,
-        gender : "female",
+import fetch from "node-fetch";
+
+const API_URL = "https://yts.am/api/v2/list_movies.json?"
+
+export const getMovies = (limit, rating) => {
+    // //rest api 로 가져온 정보를 graphQL로 변환
+    // return fetch(`${API_URL}`)
+    // .then(res => res.json())
+    // .then(json => json.data.movies);
+    let REQUEST_URL = API_URL;
+    if(limit > 0){
+        REQUEST_URL += `limit=${limit}`;
     }
-];
 
-let movies = [
-    {
-        id: 0,
-        name : "Start Wars - The new one",
-        score : 1
-    },
-    {
-        id: 1,
-        name : "Avengers - The new one",
-        score : 8
-    },
-    {
-        id: 2,
-        name : "The Godfather I",
-        score : 99
-    },
-    {
-        id: 3,
-        name : "Logan",
-        score : 2
+    if(rating > 0){
+        REQUEST_URL += `&minimum_rating=${rating}`;
     }
-    
-]
 
-export const getById = id => {
-    //filter는 모든 대상을 거쳐 해당 조건에 맞는 걸 리턴하는 것 
-    const filteredPeople = people.filter(person => id === person.id);
-    return filteredPeople[0];
-}
-
-export const getMovies = () => movies;
-export const getMovieById = id => {
-    const filteredMovie = movies.filter(movie => movie.id === id);
-    return filteredMovie[0];
-}
-
-export const deleteMovie = (id) => {
-    //선택한 id빼고 남은것만 저장(선택한 id값을 지움)
-    const cleanedMovies = movies.filter(movie => movie.id !== id);
-    if(movies.length > cleanedMovies.length){
-        movies = cleanedMovies;
-        return true;
-    }else{
-        return false;
-    }
-}
-
-export const addMovie = (name, score) =>{
-    const newMovie = {
-        id: `${movies.length + 1}`, // movies배열 길이에 더하기 1
-        name,
-        score,
-    }
-    movies.push(newMovie);
-    return newMovie;
+    console.log(REQUEST_URL);
+    return fetch(REQUEST_URL)
+    .then(res => res.json())
+    .then(json => json.data.movies);
 }
