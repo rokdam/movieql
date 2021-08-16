@@ -10,7 +10,21 @@ type Person{
     gender: String!
 }
 
+type Movie{
+    id : Int!
+    name : String!
+    score: Int!
+}
+
 type Query{
+    movies : [Movie]!
+    movie(id : Int!) : Movie
     people : [Person]! 
     person(id : Int!): Person #id로 원하는 person을 찾지 못할 수 있으니 필수로는 안 만들기
+}
+
+#데이터의 상태를 변화시키는 것
+type Mutation{
+    addMovie(name: String!, score:Int!) : Movie!
+    deleteMovie(id: Int!): Boolean!
 }
